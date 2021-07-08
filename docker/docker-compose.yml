@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  php:
+    env_file:
+      - ../app/.env
+      - ../app/.env.local
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+
+    restart: always
+    container_name: php
+    volumes:
+      - ../app:/app # Каталог приложения
+      - ./php/config/php.ini:/usr/local/etc/php/php.ini:ro # конфиг php
+      - ~/.ssh/:/root/.ssh/ # ключи ssh проброшены в контейнер для работы с репозиториями зависимостей
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_MY_DATABASE: db
+      TZ: "Europe/Moscow"
+    volumes:
+      - ./mysql/db/:/var/lib/mysql/
+    ports:
+      - 3306:3306

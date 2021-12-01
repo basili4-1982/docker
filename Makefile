@@ -1,13 +1,15 @@
 up:
-		docker-compose  -f ./docker/docker-compose.yml up -d
+	UID=`id -u` GID=`id -g` 	docker-compose  -f ./docker/docker-compose.yml up -d --remove-orphans
 
 down:
-	docker-compose  -f ./docker/docker-compose.yml down
+	UID=`id -u` GID=`id -g` 	docker-compose  -f ./docker/docker-compose.yml down
 
 
 build:
-	docker-compose  -f ./docker/docker-compose.yml build
+	UID=`id -u` GID=`id -g` 	docker-compose  -f ./docker/docker-compose.yml build
 
+php:
+	UID=`id -u` GID=`id -g` docker exec -it docker_php_1 bash
 
 init:
 	cp  ./environment/.* ./app || true
